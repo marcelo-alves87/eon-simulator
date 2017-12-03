@@ -22,12 +22,10 @@ import br.ufpe.simulatorkernel.domain.Link;
 /**
  * A simple simulation approach based on creating connection requests.
  */
-public class SimpleSimulationController extends AbstractSimulationController
-		implements IsSimulationController {
+public class SimpleSimulationController extends AbstractSimulationController implements IsSimulationController {
 
 	// Private class for Simulation Route information
-	private static Logger logger = Logger
-			.getLogger(SimpleSimulationController.class);
+	private static Logger logger = Logger.getLogger(SimpleSimulationController.class);
 	private static final String SIMULATION_ROUTE_NOT_FOUND = "simulation.route.notFound";
 	private static final String SIMULATION_INVALID_PATH_INFO = "simulation.invalidPath.info";
 	private static final String SIMULATION_INVALID_OSNR_INFO = "simulation.invalidOSNR.info";
@@ -46,20 +44,15 @@ public class SimpleSimulationController extends AbstractSimulationController
 		List<LinksCostWrapper> linksCostWrappers = new FixedArrayList<LinksCostWrapper>(
 				simulation.getSimulationResultSetSize());
 		for (int i = 0; i < numberOfIterations; i++) {
-			if (!SimulationResultsType.SIMPLEERLANG.equals(simulation
-					.getSimulationResultsType())) {
-				System.out.println(MessageUtils.createMessage(
-						SIMULATION_ITERATION_INFO, i));
+			if (!SimulationResultsType.SIMPLEERLANG.equals(simulation.getSimulationResultsType())) {
+				System.out.println(MessageUtils.createMessage(SIMULATION_ITERATION_INFO, i));
 			}
 			simulation.clearArrivalRate();
-			if (SimulationResultsType.LINKSCOST.equals(simulation
-					.getSimulationResultsType())) {
-				simulation.getTopology().updateLinksCost(i,
-						simulation.getLinkCostFunction(), simulation.getAlfa(),
+			if (SimulationResultsType.LINKSCOST.equals(simulation.getSimulationResultsType())) {
+				simulation.getTopology().updateLinksCost(i, simulation.getLinkCostFunction(), simulation.getAlfa(),
 						linksCostWrappers);
 			} else {
-				simulation.getTopology().updateLinksCost(i,
-						simulation.getLinkCostFunction(), simulation.getAlfa(),
+				simulation.getTopology().updateLinksCost(i, simulation.getLinkCostFunction(), simulation.getAlfa(),
 						null);
 			}
 			do {
@@ -72,142 +65,97 @@ public class SimpleSimulationController extends AbstractSimulationController
 					// Defines the node pair, the bit rate and the death time of
 					// the
 					// connection
-					Connection connection = simulation.getTrafficGenerator()
-							.createConnection(simulation);
-					simulation.getSimulationResults()
-							.incrementNumberOfRequests();
-					simulation.getSimulationResults().incrementNumberOfRequest(
-							connection.getRequestedBitRate());
+					Connection connection = simulation.getTrafficGenerator().createConnection(simulation);
+					simulation.getSimulationResults().incrementNumberOfRequests();
+					simulation.getSimulationResults().incrementNumberOfRequest(connection.getRequestedBitRate());
 					// Calculate the routes using the routing algorithm
-					List<Route> routes = simulation.getIsRoutingAlgorithm()
-							.createRoutes(connection, simulation.getTopology(),
-									simulation.getCostFunction());
+					List<Route> routes = simulation.getIsRoutingAlgorithm().createRoutes(connection,
+							simulation.getTopology(), simulation.getCostFunction());
 
 					// If routing returned at least one route solution:
 					if (routes != null && !routes.isEmpty()) {
-						RSAWrapper simulationRouteWrapper = simulation
-								.getRSAAlgorithm().getRSAWrapper(routes,
-										simulation, connection);
+						RSAWrapper simulationRouteWrapper = simulation.getRSAAlgorithm().getRSAWrapper(routes,
+								simulation, connection);
 
-						if (simulationRouteWrapper != null
-								&& simulationRouteWrapper.isValid()) {
+						if (simulationRouteWrapper != null && simulationRouteWrapper.isValid()) {
 							if (logger.isInfoEnabled()) {
-								logger.info(MessageUtils
-										.createMessage(SIMULATION_VALID_PATH_OSNR_INFO));
+								logger.info(MessageUtils.createMessage(SIMULATION_VALID_PATH_OSNR_INFO));
 							}
-							connection.setRoute(simulationRouteWrapper
-									.getRoute());
-							simulation.getTopology().connect(
-									simulationRouteWrapper.getRoute());
+							connection.setRoute(simulationRouteWrapper.getRoute());
+							simulation.getTopology().connect(simulationRouteWrapper.getRoute());
 							simulation.addConnection(connection);
 						} else {
 							simulation.getSimulationResults()
-									.incrementNumberOfBitRateBlockedRequest(
-											connection.getRequestedBitRate());
+									.incrementNumberOfBitRateBlockedRequest(connection.getRequestedBitRate());
 							if (simulationRouteWrapper == null) {
 								if (logger.isInfoEnabled()) {
-									logger.info(MessageUtils
-											.createMessage(SIMULATION_INVALID_PATH_INFO));
+									logger.info(MessageUtils.createMessage(SIMULATION_INVALID_PATH_INFO));
 								}
-								simulation
-										.getSimulationResults()
-										.incrementNumberOfNetworkBlockedRequests();
+								simulation.getSimulationResults().incrementNumberOfNetworkBlockedRequests();
 							} else if (!simulationRouteWrapper.isOSNRValid()) {
 								if (logger.isInfoEnabled()) {
-									logger.info(MessageUtils
-											.createMessage(SIMULATION_INVALID_OSNR_INFO));
+									logger.info(MessageUtils.createMessage(SIMULATION_INVALID_OSNR_INFO));
 								}
-								simulation.getSimulationResults()
-										.incrementNumberOfPhysicalBlocking();
+								simulation.getSimulationResults().incrementNumberOfPhysicalBlocking();
 							}
 						}
 					} else {
 						if (logger.isInfoEnabled()) {
-							logger.info(MessageUtils.createMessage(
-									SIMULATION_ROUTE_NOT_FOUND, connection
-											.getPhysicalElementPair()
-											.getSource().getIndex(), connection
-											.getPhysicalElementPair()
-											.getTarget().getIndex()));
+							logger.info(MessageUtils.createMessage(SIMULATION_ROUTE_NOT_FOUND,
+									connection.getPhysicalElementPair().getSource().getIndex(),
+									connection.getPhysicalElementPair().getTarget().getIndex()));
 						}
 					}
-					simulation.setSimulationTime(simulation
-							.getTrafficGenerator().getArrivalTimeGen()
-							.getArrivalTime(simulation));
+					simulation.setSimulationTime(
+							simulation.getTrafficGenerator().getArrivalTimeGen().getArrivalTime(simulation));
 				}
-				if (SimulationResultsType.ERLANG.equals(simulation
-						.getSimulationResultsType())) {
-					System.out.println(MessageUtils.createMessage(
-							SIMULATION_ERLANG_INFO,
-							simulation.getErlangTraffic()));
-					System.out.println(MessageUtils.createMessage(
-							SIMULATION_RESULTS_INFO, simulation
-									.getSimulationResults()
-									.getNumberOfRequests(), ConvertUtils
-									.convertToLocaleString(simulation
-											.getSimulationResults()
-											.getBlockingProbability()),
-							ConvertUtils.convertToLocaleString(simulation
-									.getSimulationResults()
-									.getNetworkBlockingProbability()),
-							ConvertUtils.convertToLocaleString(simulation
-									.getSimulationResults()
-									.getPhysicalBlockingProbability()),
-							ConvertUtils.convertToLocaleString(simulation
-									.getSimulationResults()
-									.getValidPhysicalRoutesRate())));
-				} else if (SimulationResultsType.SIMPLEERLANG.equals(simulation
-						.getSimulationResultsType())) {
+				if (SimulationResultsType.ERLANG.equals(simulation.getSimulationResultsType())) {
+					System.out
+							.println(MessageUtils.createMessage(SIMULATION_ERLANG_INFO, simulation.getErlangTraffic()));
+					System.out.println(MessageUtils.createMessage(SIMULATION_RESULTS_INFO,
+							simulation.getSimulationResults().getNumberOfRequests(),
+							ConvertUtils
+									.convertToLocaleString(simulation.getSimulationResults().getBlockingProbability()),
+							ConvertUtils.convertToLocaleString(
+									simulation.getSimulationResults().getNetworkBlockingProbability()),
+							ConvertUtils.convertToLocaleString(
+									simulation.getSimulationResults().getPhysicalBlockingProbability()),
+							ConvertUtils.convertToLocaleString(
+									simulation.getSimulationResults().getValidPhysicalRoutesRate())));
+				} else if (SimulationResultsType.SIMPLEERLANG.equals(simulation.getSimulationResultsType())) {
 					System.out.println(ConvertUtils
-							.convertToLocaleString(simulation
-									.getSimulationResults()
-									.getBlockingProbability()));
-				} else if (SimulationResultsType.SIMPLEERLANG_LINKCOST
-						.equals(simulation.getSimulationResultsType())) {
+							.convertToLocaleString(simulation.getSimulationResults().getBlockingProbability()));
+				} else if (SimulationResultsType.SIMPLEERLANG_LINKCOST.equals(simulation.getSimulationResultsType())) {
 					List<String> linksCost = new ArrayList<String>();
 					for (Link link : simulation.getTopology().getLinks()) {
-						linksCost.add(ConvertUtils.convertToString(link
-								.getCost()));
+						linksCost.add(ConvertUtils.convertToString(link.getCost()));
 					}
-					linksCostWrappers.add(new LinksCostWrapper(simulation
-							.getSimulationResults().getBlockingProbability(),
-							linksCost));
+					linksCostWrappers.add(new LinksCostWrapper(
+							simulation.getSimulationResults().getBlockingProbability(), linksCost));
 				}
 			} while (simulation.nextSimulation());
 		}
-		if (SimulationResultsType.BITRATE.equals(simulation
-				.getSimulationResultsType())) {
-			Map<Double, SimulationRequestCount> map = simulation
-					.getSimulationResults().getBitRateBlockingProbability();
+		if (SimulationResultsType.BITRATE.equals(simulation.getSimulationResultsType())) {
+			Map<Double, SimulationRequestCount> map = simulation.getSimulationResults().getBitRateBlockingProbability();
 			for (Entry<Double, SimulationRequestCount> entry : map.entrySet()) {
-				System.out.println(MessageUtils.createMessage(
-						SIMULATION_BITRATE_INFO, entry.getKey()));
-				System.out.println(MessageUtils.createMessage(
-						SIMULATION_RESULTS_BITRATE_INFO, ConvertUtils
-								.convertToLocaleString(entry.getValue()
-										.getNumberOfRequest()), ConvertUtils
-								.convertToLocaleString(entry.getValue()
-										.getBlockingProbability())));
+				System.out.println(MessageUtils.createMessage(SIMULATION_BITRATE_INFO, entry.getKey()));
+				System.out.println(MessageUtils.createMessage(SIMULATION_RESULTS_BITRATE_INFO,
+						ConvertUtils.convertToLocaleString(entry.getValue().getNumberOfRequest()),
+						ConvertUtils.convertToLocaleString(entry.getValue().getBlockingProbability())));
 			}
-		} else if (SimulationResultsType.LINKSCOST.equals(simulation
-				.getSimulationResultsType())) {
+		} else if (SimulationResultsType.LINKSCOST.equals(simulation.getSimulationResultsType())) {
 			for (LinksCostWrapper linksCostWrapper : linksCostWrappers) {
-				System.out.println(MessageUtils.createMessage(
-						SIMULATION_LINKSCOST_INFO, ConvertUtils
-								.convertToLocaleString(linksCostWrapper
-										.getMaxCost())));
+				System.out.println(MessageUtils.createMessage(SIMULATION_LINKSCOST_INFO,
+						ConvertUtils.convertToLocaleString(linksCostWrapper.getMaxCost())));
 				for (String cost : linksCostWrapper.getLinksCosts()) {
 					System.out.println(cost);
 				}
 			}
-		} else if (SimulationResultsType.SIMPLEERLANG_LINKCOST
-				.equals(simulation.getSimulationResultsType())) {
+		} else if (SimulationResultsType.SIMPLEERLANG_LINKCOST.equals(simulation.getSimulationResultsType())) {
 
 			for (LinksCostWrapper linksCostWrapper : linksCostWrappers) {
-				System.out.println(MessageUtils.createMessage(
-						SIMULATION_SIMPLEERLANG_LINKCOST_INFO, ConvertUtils
-								.convertToLocaleString(linksCostWrapper
-										.getMaxCost())));
+				System.out.println(MessageUtils.createMessage(SIMULATION_SIMPLEERLANG_LINKCOST_INFO,
+						ConvertUtils.convertToLocaleString(linksCostWrapper.getMaxCost())));
 				for (String cost : linksCostWrapper.getLinksCosts()) {
 					System.out.println(cost);
 				}
