@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class-diagram version="1.2.0" icons="true" always-add-relationships="false" generalizations="true" realizations="true" 
+  associations="true" dependencies="false" nesting-relationships="true" router="FAN">  
+  <class id="1" language="java" name="br.ufpe.simulatorkernel.domain.IsPhysicalElement" project="SimulatorKernel" 
+    file="/SimulatorKernel/src/main/java/br/ufpe/simulatorkernel/domain/IsPhysicalElement.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="53" width="280" x="570" y="-97"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="2" language="java" name="br.ufpe.simulatorkernel.domain.LinksFactory" project="SimulatorKernel" 
+    file="/SimulatorKernel/src/main/java/br/ufpe/simulatorkernel/domain/LinksFactory.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="53" width="394" x="-33" y="-267"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="3" language="java" name="br.ufpe.simulatorkernel.domain.SpanSet" project="SimulatorKernel" 
+    file="/SimulatorKernel/src/main/java/br/ufpe/simulatorkernel/domain/SpanSet.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="55" width="263" x="957" y="174"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="4" language="java" name="br.ufpe.simulatorkernel.domain.Link" project="SimulatorKernel" 
+    file="/SimulatorKernel/src/main/java/br/ufpe/simulatorkernel/domain/Link.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="53" width="298" x="385" y="-266"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="5" language="java" name="br.ufpe.simulatorkernel.domain.SlotOccupancyCollection" project="SimulatorKernel" 
+    file="/SimulatorKernel/src/main/java/br/ufpe/simulatorkernel/domain/SlotOccupancyCollection.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="54" width="263" x="229" y="-95"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="6" language="java" name="br.ufpe.simulatorkernel.domain.Fiber" project="SimulatorKernel" 
+    file="/SimulatorKernel/src/main/java/br/ufpe/simulatorkernel/domain/Fiber.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="54" width="280" x="941" y="294"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="7" language="java" name="br.ufpe.simulatorkernel.domain.PhysicalElementPair" project="SimulatorKernel" 
+    file="/SimulatorKernel/src/main/java/br/ufpe/simulatorkernel/domain/PhysicalElementPair.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="53" width="192" x="930" y="-267"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="8" language="java" name="br.ufpe.simulatorkernel.domain.Span" project="SimulatorKernel" 
+    file="/SimulatorKernel/src/main/java/br/ufpe/simulatorkernel/domain/Span.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="56" width="280" x="575" y="125"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="9" language="java" name="br.ufpe.simulatorkernel.domain.LineAmplifier" project="SimulatorKernel" 
+    file="/SimulatorKernel/src/main/java/br/ufpe/simulatorkernel/domain/LineAmplifier.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="53" width="188" x="416" y="200"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="10" language="java" name="br.ufpe.simulatorkernel.domain.Node" project="SimulatorKernel" 
+    file="/SimulatorKernel/src/main/java/br/ufpe/simulatorkernel/domain/Node.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="53" width="151" x="10" y="255"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="11" language="java" name="br.ufpe.simulatorkernel.domain.PhysicalLayerProperties" project="SimulatorKernel" 
+    file="/SimulatorKernel/src/main/java/br/ufpe/simulatorkernel/domain/PhysicalLayerProperties.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="53" width="232" x="690" y="-265"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="12" language="java" name="br.ufpe.simulatorkernel.domain.Laser" project="SimulatorKernel" 
+    file="/SimulatorKernel/src/main/java/br/ufpe/simulatorkernel/domain/Laser.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="55" width="151" x="116" y="34"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="13" language="java" name="br.ufpe.simulatorkernel.domain.CompensatedNode.NodeLineAmplifier" 
+    project="SimulatorKernel" file="/SimulatorKernel/src/main/java/br/ufpe/simulatorkernel/domain/CompensatedNode.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="54" width="139" x="225" y="263"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="14" language="java" name="br.ufpe.simulatorkernel.domain.CompensatedNode" project="SimulatorKernel" 
+    file="/SimulatorKernel/src/main/java/br/ufpe/simulatorkernel/domain/CompensatedNode.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="55" width="246" x="76" y="116"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <generalization id="15">    
+    <end type="SOURCE" refId="3"/>    
+    <end type="TARGET" refId="1"/>  
+  </generalization>  
+  <association id="16">    
+    <end type="SOURCE" refId="3" navigable="false">      
+      <attribute id="17" name="spans"/>      
+      <multiplicity id="18" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="8" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="19">    
+    <end type="SOURCE" refId="8" navigable="false">      
+      <attribute id="20" name="fiber"/>      
+      <multiplicity id="21" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="6" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="22">    
+    <end type="SOURCE" refId="14"/>    
+    <end type="TARGET" refId="1"/>  
+  </generalization>  
+  <generalization id="23">    
+    <end type="SOURCE" refId="8"/>    
+    <end type="TARGET" refId="1"/>  
+  </generalization>  
+  <association id="24">    
+    <end type="SOURCE" refId="8" navigable="false">      
+      <attribute id="25" name="spanLineAmplifier"/>      
+      <multiplicity id="26" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="9" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="27">    
+    <bendpoint x="895" y="270"/>    
+    <end type="SOURCE" refId="6"/>    
+    <end type="TARGET" refId="1"/>  
+  </generalization>  
+  <generalization id="28">    
+    <end type="SOURCE" refId="12"/>    
+    <end type="TARGET" refId="1"/>  
+  </generalization>  
+  <association id="29">    
+    <bendpoint x="230" y="224"/>    
+    <end type="SOURCE" refId="14" navigable="false">      
+      <attribute id="30" name="nodeLineAmplifier"/>      
+      <multiplicity id="31" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="13" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="32">    
+    <end type="SOURCE" refId="7" navigable="false">      
+      <attribute id="33" name="target"/>      
+      <multiplicity id="34" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="1" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="35">    
+    <end type="SOURCE" refId="4" navigable="false">      
+      <attribute id="36" name="physicalElements"/>      
+      <multiplicity id="37" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="1" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="38">    
+    <end type="SOURCE" refId="13"/>    
+    <end type="TARGET" refId="9"/>  
+  </generalization>  
+  <association id="39">    
+    <end type="SOURCE" refId="14" navigable="false">      
+      <attribute id="40" name="node"/>      
+      <multiplicity id="41" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="10" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="42">    
+    <end type="SOURCE" refId="7" navigable="false">      
+      <attribute id="43" name="source"/>      
+      <multiplicity id="44" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="1" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <nesting id="45">    
+    <end type="SOURCE" refId="14"/>    
+    <end type="TARGET" refId="13"/>  
+  </nesting>  
+  <association id="46">    
+    <end type="SOURCE" refId="4" navigable="false">      
+      <attribute id="47" name="ocSpectrumCollection"/>      
+      <multiplicity id="48" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="5" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="49">    
+    <bendpoint x="491" y="117"/>    
+    <end type="SOURCE" refId="9"/>    
+    <end type="TARGET" refId="1"/>  
+  </generalization>  
+  <generalization id="50">    
+    <bendpoint x="409" y="144"/>    
+    <end type="SOURCE" refId="10"/>    
+    <end type="TARGET" refId="1"/>  
+  </generalization>  
+  <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+    sort-features="false" accessors="true" visibility="true">    
+    <attributes public="false" package="false" protected="false" private="false" static="false"/>    
+    <operations public="true" package="true" protected="true" private="true" static="true"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>

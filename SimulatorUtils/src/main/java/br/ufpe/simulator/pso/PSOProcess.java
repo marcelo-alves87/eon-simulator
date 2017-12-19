@@ -89,8 +89,13 @@ public class PSOProcess implements PSOConstants {
 															// functions means
 															// it's getting
 															// closer to 0
-			System.out.println(ConvertUtils.convertToLocaleString(gBest));
 			t++;
+			System.out.println("------------" + t  +"---------------------");
+			System.out.println("--------------GBEST--------------------");
+			System.out.println(ConvertUtils.convertToLocaleString(gBest));
+			System.out.println("--------------GBEST--LOCATION---------");
+			System.out.println(gBestLocation);
+			System.out.println("---------------------------------------");
 			updateFitnessList(iProblemSet);
 		}
 	}
