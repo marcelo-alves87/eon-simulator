@@ -11,4 +11,6 @@ public interface IProblemSet {
 	int getProblemDimension();
 
 	double evaluate(Location location);
+	
+	List<Double[]> getLinkCosts();
 }

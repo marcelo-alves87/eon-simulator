@@ -24,8 +24,7 @@ public class ExampleProblemSet implements IProblemSet {
 		double x = location.getLoc()[0]; // the "x" part of the location
 		double y = location.getLoc()[1]; // the "y" part of the location
 
-		result = Math.pow(2.8125 - x + x * Math.pow(y, 4), 2)
-				+ Math.pow(2.25 - x + x * Math.pow(y, 2), 2)
+		result = Math.pow(2.8125 - x + x * Math.pow(y, 4), 2) + Math.pow(2.25 - x + x * Math.pow(y, 2), 2)
 				+ Math.pow(1.5 - x + x * y, 2);
 
 		return result;
@@ -55,6 +54,11 @@ public class ExampleProblemSet implements IProblemSet {
 	@Override
 	public int getProblemDimension() {
 		return 2;
+	}
+
+	@Override
+	public List<Double[]> getLinkCosts() {
+		return null;
 	}
 
 }
