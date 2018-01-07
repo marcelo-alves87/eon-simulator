@@ -104,7 +104,7 @@ public class PSOProcess implements PSOConstants {
 
 			double[] loc = new double[iProblemSet.getProblemDimension()];
 			for (int j = 0; j < loc.length; j++) {
-				if (linkCosts != null) {
+				if (linkCosts != null && !linkCosts.isEmpty()) {
 					loc[j] = linkCosts.get(i)[j];
 				} else {
 					// randomize location inside a space defined in Problem Set
@@ -133,6 +133,9 @@ public class PSOProcess implements PSOConstants {
 	public void updateFitnessList(IProblemSet iProblemSet) {
 		for (int i = 0; i < SWARM_SIZE; i++) {
 			fitnessValueList[i] = swarm.get(i).getFitnessValue(iProblemSet);
+			if (i == 0) {
+				System.out.println("Referência: " + fitnessValueList[i]);
+			}
 		}
 	}
 }
