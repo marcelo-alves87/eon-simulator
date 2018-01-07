@@ -37,9 +37,9 @@ public class PSOSimulationController extends AbstractSimulationController implem
 				for (int i = 0; i < size; i++) {
 					ProblemRange problemRange = new ProblemRange();
 					problemRange.setHigh(1);
-					problemRange.setLow(0.001);
-					problemRange.setVelocityHigh(100);
-					problemRange.setVelocityLow(0.1);
+					problemRange.setLow(-1);
+					problemRange.setVelocityHigh(1);
+					problemRange.setVelocityLow(-1);
 					problemRanges.add(problemRange);
 				}
 				return problemRanges;

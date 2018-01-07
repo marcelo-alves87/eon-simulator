@@ -19,10 +19,8 @@ public abstract class IsRoutingAlgorithm {
 	private static final String ROUTE_INFO = "route.info";
 	private static final String ROUTE_INFO_INDEXS = "route.info.indexs";
 
-	public List<Route> createRoutes(Connection connection, Topology topology,
-			IsCostFunction costFunction) {
-		PhysicalElementPair physicalElementPair = connection
-				.getPhysicalElementPair();
+	public List<Route> createRoutes(Connection connection, Topology topology, IsCostFunction costFunction) {
+		PhysicalElementPair physicalElementPair = connection.getPhysicalElementPair();
 		List<Route> routes = null;
 		if (topology.hasPath(physicalElementPair)) {
 			List<Path> paths = topology.getPaths(physicalElementPair);
@@ -35,8 +33,7 @@ public abstract class IsRoutingAlgorithm {
 		return routes;
 	}
 
-	private void toPaths(List<Route> routes, Topology topology,
-			PhysicalElementPair physicalElementPair) {
+	private void toPaths(List<Route> routes, Topology topology, PhysicalElementPair physicalElementPair) {
 		for (Route route : routes) {
 			topology.addPath(physicalElementPair, route);
 		}
@@ -57,12 +54,10 @@ public abstract class IsRoutingAlgorithm {
 		if (logger.isInfoEnabled() && routes != null) {
 			logger.info(MessageUtils.createMessage(ROUTE_INFO));
 			for (Route route : routes) {
-				logger.info(MessageUtils.createMessage(ROUTE_INFO_INDEXS,
-						route.getSeparatedElementsIndex()));
+				logger.info(MessageUtils.createMessage(ROUTE_INFO_INDEXS, route.getSeparatedElementsIndex()));
 			}
 		}
 	}
 
-	protected abstract List<Route> getRoutes(Connection connection,
-			Topology topology, IsCostFunction costFunction);
+	protected abstract List<Route> getRoutes(Connection connection, Topology topology, IsCostFunction costFunction);
 }

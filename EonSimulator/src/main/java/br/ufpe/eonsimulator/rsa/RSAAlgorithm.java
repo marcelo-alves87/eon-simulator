@@ -28,61 +28,47 @@ public abstract class RSAAlgorithm implements IsRSAAlgorithm {
 	private int kFilter;
 	private boolean qotFilter;
 
-	public RSAAlgorithm(
-			Comparator<ModulationFormatBitRateWrapper> modulationFormatComparator,
-			int kFilter, boolean qotFilter) {
+	public RSAAlgorithm(Comparator<ModulationFormatBitRateWrapper> modulationFormatComparator, int kFilter,
+			boolean qotFilter) {
 		super();
 		this.modulationFormatComparator = modulationFormatComparator;
 		this.kFilter = kFilter;
 		this.qotFilter = qotFilter;
 	}
 
-	public RSAWrapper getRSAWrapper(List<Route> routes, Simulation simulation,
-			Connection connection) {
+	public RSAWrapper getRSAWrapper(List<Route> routes, Simulation simulation, Connection connection) {
 		RSAWrapper routeWrapper = null;
 		boolean isValidRouteWrapper = false;
-		Iterator<ModulationFormatBitRateWrapper> modulationFormatIterator = createModulationFormatIterator(
-				simulation, connection);
+		Iterator<ModulationFormatBitRateWrapper> modulationFormatIterator = createModulationFormatIterator(simulation,
+				connection);
 		while (!isValidRouteWrapper && modulationFormatIterator.hasNext()) {
 			routeWrapper = null;
-			IsModulationFormat modulationFormat = modulationFormatIterator
-					.next().getModulationFormat();
-			connection.setNumberSlotRequired(modulationFormat
-					.createNumberOfRequiredSlots(
-							simulation.getSimulationParameters()
-									.getConnectionSlotWidth(), connection
-									.getRequestedBitRate()));
+			IsModulationFormat modulationFormat = modulationFormatIterator.next().getModulationFormat();
+			connection.setNumberSlotRequired(modulationFormat.createNumberOfRequiredSlots(
+					simulation.getSimulationParameters().getConnectionSlotWidth(), connection.getRequestedBitRate()));
 
-			connection.setRequiredOSNR(modulationFormat.createRequiredOSNR(
-					simulation, connection.getRequestedBitRate()));
+			connection
+					.setRequiredOSNR(modulationFormat.createRequiredOSNR(simulation, connection.getRequestedBitRate()));
 
-			List<RSAWrapper> routeWrappers = createRsaWrappers(routes,
-					simulation, connection, modulationFormat, true);
+			List<RSAWrapper> routeWrappers = createRsaWrappers(routes, simulation, connection, modulationFormat, true);
 			List<RSAWrapper> pathWrappers = new ArrayList<RSAWrapper>();
 			for (RSAWrapper rsaWrapper : routeWrappers) {
 				if (rsaWrapper.isPathValid()) {
 					pathWrappers.add(rsaWrapper);
 				}
 			}
-			simulation.getSimulationResults()
-					.incrementNumberOfPhysicalValidRoutes(pathWrappers.size());
+			simulation.getSimulationResults().incrementNumberOfPhysicalValidRoutes(pathWrappers.size());
 			for (RSAWrapper rsaWrapper : pathWrappers) {
 				routeWrapper = rsaWrapper;
 				connection.setNumberSlotRequired(routeWrapper.getnSlots());
 				connection.setRequiredOSNR(routeWrapper.getRequiredOSNR());
 				if (rsaWrapper.isValid()) {
 					if (logger.isInfoEnabled()) {
-						logger.info(MessageUtils.createMessage(
-								SIMULATION_ROUTE_BESTROUTE_INFO,
-								routeWrapper.getRoute()
-										.getSeparatedElementsIndex(),
-								routeWrapper.isPathValid(), routeWrapper
-										.isOSNRValid(), connection
-										.getNumberSlotRequired(), connection
-										.getRequestedBitRate(), ConvertUtils
-										.convertToLocaleString(MathUtils
-												.convertLinearTodB(connection
-														.getRequiredOSNR()))));
+						logger.info(MessageUtils.createMessage(SIMULATION_ROUTE_BESTROUTE_INFO,
+								routeWrapper.getRoute().getSeparatedElementsIndex(), routeWrapper.isPathValid(),
+								routeWrapper.isOSNRValid(), connection.getNumberSlotRequired(),
+								connection.getRequestedBitRate(), ConvertUtils.convertToLocaleString(
+										MathUtils.convertLinearTodB(connection.getRequiredOSNR()))));
 					}
 					isValidRouteWrapper = true;
 					break;
@@ -90,29 +76,28 @@ public abstract class RSAAlgorithm implements IsRSAAlgorithm {
 
 			}
 			if (!isValidRouteWrapper && logger.isInfoEnabled()) {
-				logger.info(MessageUtils.createMessage(
-						SIMULATION_ROUTE_TRY_NEW_MODULATIONFORMAT_INFO,
-						MathUtils.convertLinearTodB(connection
-								.getRequiredOSNR()), connection
-								.getNumberSlotRequired()));
+				logger.info(MessageUtils.createMessage(SIMULATION_ROUTE_TRY_NEW_MODULATIONFORMAT_INFO,
+						MathUtils.convertLinearTodB(connection.getRequiredOSNR()), connection.getNumberSlotRequired()));
 			}
 		}
 		return routeWrapper;
 	}
 
-	public List<RSAWrapper> createRsaWrappers(List<Route> routes,
-			Simulation simulation, Connection connection,
+	public List<RSAWrapper> createRsaWrappers(List<Route> routes, Simulation simulation, Connection connection,
 			IsModulationFormat modulationFormat, boolean doSpectrumAssignment) {
 		List<RSAWrapper> routeWrappers = new ArrayList<RSAWrapper>();
 		for (Route route : routes) {
+
+			route.getLastLink().getTarget().getIndex();
+
+			MathUtils.convertLinearTodB(route.getOSNR());
+
 			if (doSpectrumAssignment) {
 				// Try to assign a wavelength to each path, using the WA
-				simulation.getIsAssignmentAlgorithm().trySpectrumAssignment(
-						connection, route);
+				simulation.getIsAssignmentAlgorithm().trySpectrumAssignment(connection, route);
 			}
-			RSAWrapper routeWrapper2 = createRSAWrapperAndDoLog(
-					StringUtil.generateString(), route, simulation, connection,
-					modulationFormat, connection.getNumberSlotRequired());
+			RSAWrapper routeWrapper2 = createRSAWrapperAndDoLog(StringUtil.generateString(), route, simulation,
+					connection, modulationFormat, connection.getNumberSlotRequired());
 			if (qotFilter) {
 				if (routeWrapper2.isOSNRValid) {
 					routeWrappers.add(routeWrapper2);
@@ -128,44 +113,37 @@ public abstract class RSAAlgorithm implements IsRSAAlgorithm {
 		return routeWrappers;
 	}
 
-	public Iterator<ModulationFormatBitRateWrapper> createModulationFormatIterator(
-			Simulation simulation, Connection connection) {
+	public Iterator<ModulationFormatBitRateWrapper> createModulationFormatIterator(Simulation simulation,
+			Connection connection) {
 		List<ModulationFormatBitRateWrapper> isModulationFormats = createModulationFormatBitRateWrappers(
-				simulation.getModulationFormats(), connection, simulation
-						.getSimulationParameters().getConnectionSlotWidth());
+				simulation.getModulationFormats(), connection,
+				simulation.getSimulationParameters().getConnectionSlotWidth());
 		Collections.sort(isModulationFormats, modulationFormatComparator);
-		Iterator<ModulationFormatBitRateWrapper> modulationFormatIterator = isModulationFormats
-				.iterator();
+		Iterator<ModulationFormatBitRateWrapper> modulationFormatIterator = isModulationFormats.iterator();
 		return modulationFormatIterator;
 	}
 
 	private List<ModulationFormatBitRateWrapper> createModulationFormatBitRateWrappers(
-			List<IsModulationFormat> modulationFormats, Connection connection,
-			double slotWidth) {
+			List<IsModulationFormat> modulationFormats, Connection connection, double slotWidth) {
 		List<ModulationFormatBitRateWrapper> formatBitRateWrappers = new ArrayList<ModulationFormatBitRateWrapper>();
 		if (modulationFormats != null) {
 			for (IsModulationFormat modulationFormat : modulationFormats) {
-				formatBitRateWrappers.add(new ModulationFormatBitRateWrapper(
-						modulationFormat, connection.getRequestedBitRate(),
-						slotWidth));
+				formatBitRateWrappers.add(new ModulationFormatBitRateWrapper(modulationFormat,
+						connection.getRequestedBitRate(), slotWidth));
 			}
 		}
 		return formatBitRateWrappers;
 	}
 
-	protected abstract RSAWrapper createRSAWrapper(String index, Route route,
-			Simulation simulation, Connection connection,
-			IsModulationFormat modulationFormat, int nSlots);
+	protected abstract RSAWrapper createRSAWrapper(String index, Route route, Simulation simulation,
+			Connection connection, IsModulationFormat modulationFormat, int nSlots);
 
-	protected RSAWrapper createRSAWrapperAndDoLog(String index, Route route,
-			Simulation simulation, Connection connection,
-			IsModulationFormat modulationFormat, int nSlots) {
+	protected RSAWrapper createRSAWrapperAndDoLog(String index, Route route, Simulation simulation,
+			Connection connection, IsModulationFormat modulationFormat, int nSlots) {
 		if (logger.isInfoEnabled()) {
-			logger.info("Estados dos slots : "
-					+ route.getSlotOccupancyCollection().printOccupancy());
+			logger.info("Estados dos slots : " + route.getSlotOccupancyCollection().printOccupancy());
 		}
-		return createRSAWrapper(index, route, simulation, connection,
-				modulationFormat, nSlots);
+		return createRSAWrapper(index, route, simulation, connection, modulationFormat, nSlots);
 	}
 
 }
