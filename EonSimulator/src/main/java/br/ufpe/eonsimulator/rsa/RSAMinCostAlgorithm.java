@@ -36,9 +36,9 @@ public class RSAMinCostAlgorithm extends RSAAlgorithm {
 			} else if (thisCost > otherCost) {
 				return 1;
 			} else if (thisOSNR > otherOSNR) {
-				return 1;
-			} else if (thisOSNR < otherOSNR) {
 				return -1;
+			} else if (thisOSNR < otherOSNR) {
+				return 1;
 			} else {
 				return 0;
 			}

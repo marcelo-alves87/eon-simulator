@@ -88,10 +88,6 @@ public abstract class RSAAlgorithm implements IsRSAAlgorithm {
 		List<RSAWrapper> routeWrappers = new ArrayList<RSAWrapper>();
 		for (Route route : routes) {
 
-			route.getLastLink().getTarget().getIndex();
-
-			MathUtils.convertLinearTodB(route.getOSNR());
-
 			if (doSpectrumAssignment) {
 				// Try to assign a wavelength to each path, using the WA
 				simulation.getIsAssignmentAlgorithm().trySpectrumAssignment(connection, route);
