@@ -20,6 +20,6 @@ public class PSOUtility {
 	}
 
 	public static int getDimension(IProblemSet iProblemSet) {
-		return iProblemSet != null ? iProblemSet.getProblemDimension() : PSOConstants.PROBLEM_DIMENSION;
+		return iProblemSet != null ? iProblemSet.getProblemDimension() : 0;
 	}
 }

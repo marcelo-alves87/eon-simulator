@@ -6,6 +6,10 @@ package br.ufpe.simulator.pso;
 
 public class PSODriver {
 	public static void main(String args[]) {
-		new PSOProcess().execute(new ProblemSet());
+		PSOProcess p = new PSOProcess();
+		p.execute(new ProblemSet());
+		for (String string : p.getMessages()) {
+			System.out.println(string);
+		}
 	}
 }

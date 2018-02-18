@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -103,6 +104,18 @@ public class PSOSimulationController extends AbstractSimulationController implem
 				return linksCosts;
 			}
 		};
-		new PSOProcess().execute(problemSet);
+		PSOProcess p = new PSOProcess();
+		p.execute(problemSet);
+
+		PrintWriter writer;
+		try {
+			writer = new PrintWriter("src/main/resources/psoOutput.txt", "UTF-8");
+			for (String string : p.getMessages()) {
+				writer.println(string);
+			}
+			writer.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }
