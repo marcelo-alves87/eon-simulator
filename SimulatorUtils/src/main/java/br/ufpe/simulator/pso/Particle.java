@@ -4,7 +4,7 @@ public class Particle {
 	private double fitnessValue;
 	private Velocity velocity;
 	private Location location;
-
+	
 	public Particle() {
 		super();
 	}

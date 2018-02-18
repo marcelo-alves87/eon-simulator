@@ -18,4 +18,8 @@ public class PSOUtility {
 
 		return pos;
 	}
+
+	public static int getDimension(IProblemSet iProblemSet) {
+		return iProblemSet != null ? iProblemSet.getProblemDimension() : PSOConstants.PROBLEM_DIMENSION;
+	}
 }

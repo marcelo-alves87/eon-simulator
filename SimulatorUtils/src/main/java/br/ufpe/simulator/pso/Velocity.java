@@ -5,8 +5,7 @@ package br.ufpe.simulator.pso;
 // bean class to represent velocity
 
 public class Velocity {
-	// store the Velocity in an array to accommodate multi-dimensional problem
-	// space
+	// store the Velocity in an array to accommodate multi-dimensional problem space
 	private double[] vel;
 
 	public Velocity(double[] vel) {
@@ -21,5 +20,5 @@ public class Velocity {
 	public void setPos(double[] vel) {
 		this.vel = vel;
 	}
-
+	
 }

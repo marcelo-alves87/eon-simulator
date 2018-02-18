@@ -17,7 +17,6 @@ import br.ufpe.simulator.pso.IProblemSet;
 import br.ufpe.simulator.pso.Location;
 import br.ufpe.simulator.pso.PSOConstants;
 import br.ufpe.simulator.pso.PSOProcess;
-import br.ufpe.simulator.pso.ProblemRange;
 import br.ufpe.simulator.utils.ConvertUtils;
 
 public class PSOSimulationController extends AbstractSimulationController implements IsSimulationController {
@@ -30,20 +29,6 @@ public class PSOSimulationController extends AbstractSimulationController implem
 	public void run(final Simulation simulation) {
 		final int size = simulation.getTopology().getLinks().size();
 		IProblemSet problemSet = new IProblemSet() {
-
-			@Override
-			public List<ProblemRange> getProblemRanges() {
-				List<ProblemRange> problemRanges = new ArrayList<ProblemRange>();
-				for (int i = 0; i < size; i++) {
-					ProblemRange problemRange = new ProblemRange();
-					problemRange.setHigh(1);
-					problemRange.setLow(-1);
-					problemRange.setVelocityHigh(1);
-					problemRange.setVelocityLow(-1);
-					problemRanges.add(problemRange);
-				}
-				return problemRanges;
-			}
 
 			@Override
 			public int getProblemDimension() {

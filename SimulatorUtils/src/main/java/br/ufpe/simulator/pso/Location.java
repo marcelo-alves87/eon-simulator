@@ -20,17 +20,5 @@ public class Location {
 	public void setLoc(double[] loc) {
 		this.loc = loc;
 	}
-
-	@Override
-	public String toString() {
-		StringBuilder stringBuilder = new StringBuilder();
-		if(loc != null) {
-			for (double d : loc) {
-				stringBuilder.append(d);
-				stringBuilder.append(System.getProperty("line.separator"));
-			}
-		}
-		return stringBuilder.toString();
-	}
 	
 }
