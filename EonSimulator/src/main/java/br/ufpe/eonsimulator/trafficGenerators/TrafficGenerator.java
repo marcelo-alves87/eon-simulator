@@ -54,7 +54,7 @@ public class TrafficGenerator {
 
 		connection.setMaxSlotsExpandUnits(simulation.getSimulationParameters()
 				.getMaxSlotExpandUnits());
-		if (logger.isInfoEnabled()) {
+		if (logger.isDebugEnabled()) {
 			logger.info(MessageUtils.createMessage(TRAFFICGENERATOR_INFO,
 					connection.getPhysicalElementPair().getSource().getIndex(),
 					connection.getPhysicalElementPair().getTarget().getIndex()));

@@ -42,7 +42,7 @@ public class SimulationFactory {
 	private static final String CONNECTION_MINBITRATE_KEY = "simulation.parameters.minBitRate";
 
 	public static Simulation createSimulation(Properties properties) {
-		if (logger.isInfoEnabled()) {
+		if (logger.isDebugEnabled()) {
 			logger.info(MessageUtils.createMessage(SIMULATION_FACTORY_INFO));
 		}
 		Simulation simulation = new Simulation();

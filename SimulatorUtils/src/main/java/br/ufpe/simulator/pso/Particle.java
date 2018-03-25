@@ -36,4 +36,15 @@ public class Particle {
 		fitnessValue = iProblemSet.evaluate(location);
 		return fitnessValue;
 	}
+
+	@Override
+	public String toString() {
+		StringBuilder s = new StringBuilder();
+		s.append("\n");
+		s.append(location);
+		s.append("\n");
+		s.append(velocity);
+		s.append("\n");
+		return s.toString();
+	}
 }

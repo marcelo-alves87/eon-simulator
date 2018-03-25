@@ -130,7 +130,7 @@ public class Simulation {
 
 			for (Connection connection : connections) {
 				if (connection.getDisconnectionTime() < simulationTime) {
-					if (logger.isInfoEnabled()) {
+					if (logger.isDebugEnabled()) {
 						logger.info(MessageUtils.createMessage(
 								SIMULATION_REMOVE_CONNECTION_INFO, connection
 										.getPhysicalElementPair().getSource()

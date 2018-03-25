@@ -14,6 +14,7 @@ import br.ufpe.eonsimulator.domain.Connection;
 import br.ufpe.eonsimulator.domain.Route;
 import br.ufpe.eonsimulator.domain.Simulation;
 import br.ufpe.eonsimulator.rsa.RSAWrapper;
+import br.ufpe.simulator.messages.MessageUtils;
 import br.ufpe.simulator.pso.IProblemSet;
 import br.ufpe.simulator.pso.Location;
 import br.ufpe.simulator.pso.PSOConstants;
@@ -25,6 +26,10 @@ public class PSOSimulationController extends AbstractSimulationController implem
 	protected static final String FILE_INPUT_NAME = "src/main/resources/linksCosts.txt";
 	// Private class for Simulation Route information
 	private static Logger logger = Logger.getLogger(PSOSimulationController.class);
+	private static final String SIMULATION_ROUTE_NOT_FOUND = "simulation.route.notFound";
+	private static final String SIMULATION_INVALID_PATH_INFO = "simulation.invalidPath.info";
+	private static final String SIMULATION_INVALID_OSNR_INFO = "simulation.invalidOSNR.info";
+	private static final String SIMULATION_VALID_PATH_OSNR_INFO = "simulation.valid.path.osnr.info";
 
 	@Override
 	public void run(final Simulation simulation) {
@@ -40,7 +45,7 @@ public class PSOSimulationController extends AbstractSimulationController implem
 			public double evaluate(Location location) {
 				simulation.clearArrivalRate();
 				simulation.getTopology().updateLinksCost(location);
-				clearSimulation(simulation, logger);
+				simulation.clear();
 				for (int numberConnectionIndex = 0; numberConnectionIndex < simulation
 						.getMaxNumberConnection(); numberConnectionIndex++) {
 					simulation.clearElapsedConnections(); // Removes all the
@@ -62,6 +67,9 @@ public class PSOSimulationController extends AbstractSimulationController implem
 								simulation, connection);
 
 						if (simulationRouteWrapper != null && simulationRouteWrapper.isValid()) {
+							if (logger.isDebugEnabled()) {
+								logger.debug(MessageUtils.createMessage(SIMULATION_VALID_PATH_OSNR_INFO));
+							}
 							connection.setRoute(simulationRouteWrapper.getRoute());
 							simulation.getTopology().connect(simulationRouteWrapper.getRoute());
 							simulation.addConnection(connection);
@@ -69,10 +77,22 @@ public class PSOSimulationController extends AbstractSimulationController implem
 							simulation.getSimulationResults()
 									.incrementNumberOfBitRateBlockedRequest(connection.getRequestedBitRate());
 							if (simulationRouteWrapper == null) {
+								if (logger.isDebugEnabled()) {
+									logger.debug(MessageUtils.createMessage(SIMULATION_INVALID_PATH_INFO));
+								}
 								simulation.getSimulationResults().incrementNumberOfNetworkBlockedRequests();
 							} else if (!simulationRouteWrapper.isOSNRValid()) {
+								if (logger.isDebugEnabled()) {
+									logger.debug(MessageUtils.createMessage(SIMULATION_INVALID_OSNR_INFO));
+								}
 								simulation.getSimulationResults().incrementNumberOfPhysicalBlocking();
 							}
+						}
+					} else {
+						if (logger.isDebugEnabled()) {
+							logger.debug(MessageUtils.createMessage(SIMULATION_ROUTE_NOT_FOUND,
+									connection.getPhysicalElementPair().getSource().getIndex(),
+									connection.getPhysicalElementPair().getTarget().getIndex()));
 						}
 					}
 					simulation.setSimulationTime(

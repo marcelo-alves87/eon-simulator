@@ -21,7 +21,7 @@ public class OSNRUtils {
 		Route dualRoute = simulation.getTopology().getDualRoute(route);
 		double lastDualLinkOSNR = dualRoute.getOSNR();
 		double dualCost = dualRoute.getCost();
-		if (logger.isInfoEnabled()) {
+		if (logger.isDebugEnabled()) {
 			logger.info(MessageUtils.createMessage(SIMULATION_OSNR_INFO,
 					ConvertUtils.convertToLocaleString(MathUtils
 							.convertLinearTodB(connectionOSNR)), ConvertUtils

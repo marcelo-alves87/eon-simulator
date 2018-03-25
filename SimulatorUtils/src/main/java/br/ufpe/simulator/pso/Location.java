@@ -1,5 +1,7 @@
 package br.ufpe.simulator.pso;
 
+import java.util.Arrays;
+
 /* author: gandhi - gandhi.mtm [at] gmail [dot] com - Depok, Indonesia */
 
 // bean class to represent location
@@ -19,6 +21,11 @@ public class Location {
 
 	public void setLoc(double[] loc) {
 		this.loc = loc;
+	}
+
+	@Override
+	public String toString() {
+		return "Location [loc=" + Arrays.toString(loc) + "]";
 	}
 	
 }

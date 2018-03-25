@@ -12,7 +12,20 @@ import java.util.List;
 import java.util.Random;
 import java.util.Vector;
 
+import org.apache.log4j.Logger;
+
+import br.ufpe.simulator.messages.MessageUtils;
+import br.ufpe.simulator.utils.ConvertUtils;
+
 public class PSOProcess implements PSOConstants {
+
+	private static Logger logger = Logger.getLogger(PSOProcess.class);
+
+	private static final String SIMULATION_PSO_SWARM_SIZE = "simulation.pso.swarm.size";
+	private static final String SIMULATION_PSO_PARTICLE_DATA = "simulation.pso.particle.data";
+	private static final String SIMULATION_PSO_PARTICLE_FITNESS = "simulation.pso.particle.fitness";
+	private static final String SIMULATION_PSO_PARTICLE_PBEST = "simulation.pso.particle.pbest";
+
 	private Vector<Particle> swarm = new Vector<Particle>();
 	private double[] pBest = new double[SWARM_SIZE];
 	private Vector<Location> pBestLocation = new Vector<Location>();
@@ -35,10 +48,13 @@ public class PSOProcess implements PSOConstants {
 			lBest[i] = fitnessValueList[i];
 			pBestLocation.add(swarm.get(i).getLocation());
 			lBestLocation.add(swarm.get(i).getLocation());
+			if (logger.isInfoEnabled()) {
+				logger.info(MessageUtils.createMessage(SIMULATION_PSO_PARTICLE_PBEST, i,
+						ConvertUtils.convertToString(fitnessValueList[i])));
+			}
 		}
 
 		int t = 0;
-		double w;
 		double err = 9999;
 
 		while (t < MAX_ITERATION && err > IProblemSet.ERR_TOLERANCE) {
@@ -48,6 +64,9 @@ public class PSOProcess implements PSOConstants {
 				if (fitnessValueList[i] < pBest[i]) {
 					pBest[i] = fitnessValueList[i];
 					pBestLocation.set(i, swarm.get(i).getLocation());
+					if (logger.isInfoEnabled()) {
+						logger.info(MessageUtils.createMessage(SIMULATION_PSO_PARTICLE_PBEST, i, fitnessValueList[i]));
+					}
 				}
 			}
 
@@ -57,7 +76,7 @@ public class PSOProcess implements PSOConstants {
 				gBest = fitnessValueList[bestParticleIndex];
 				gBestLocation = swarm.get(bestParticleIndex).getLocation();
 			}
-
+			System.out.println("	GBest " + gBest);
 			// ring topology
 			for (int i = 0; i < SWARM_SIZE; i++) {
 				double[] localFitnessValueList = new double[3];
@@ -80,31 +99,29 @@ public class PSOProcess implements PSOConstants {
 				}
 			}
 
-			w = W_UPPERBOUND - (((double) t) / MAX_ITERATION) * (W_UPPERBOUND - W_LOWERBOUND);
-
 			for (int i = 0; i < SWARM_SIZE; i++) {
-				double r1 = generator.nextDouble();
-				double r2 = generator.nextDouble();
-
 				Particle p = swarm.get(i);
 
 				// step 3 - update velocity based on gBest
-				/*
-				 * double[] newVel = new double[PROBLEM_DIMENSION]; for (int j =
-				 * 0; j < newVel.length; j++) { newVel[j] = (w *
-				 * p.getVelocity().getPos()[j]) + (r1 * C1) *
-				 * (pBestLocation.get(i).getLoc()[j] -
-				 * p.getLocation().getLoc()[j]) + (r2 * C2) *
-				 * (gBestLocation.getLoc()[j] - p.getLocation().getLoc()[j]); }
-				 */
 
-				// step 3 - update velocity based on lBest
 				double[] newVel = new double[PSOUtility.getDimension(iProblemSet)];
 				for (int j = 0; j < newVel.length; j++) {
-					newVel[j] = (w * p.getVelocity().getPos()[j])
-							+ (r1 * C1) * (pBestLocation.get(i).getLoc()[j] - p.getLocation().getLoc()[j])
-							+ (r2 * C2) * (lBestLocation.get(i).getLoc()[j] - p.getLocation().getLoc()[j]);
+					newVel[j] = p.getVelocity().getPos()[j]
+							+ C1 * (pBestLocation.get(i).getLoc()[j] - p.getLocation().getLoc()[j])
+							+ C2 * (gBestLocation.getLoc()[j] - p.getLocation().getLoc()[j]);
 				}
+
+				// step 3 - update velocity based on lBest
+				/*
+				 * double[] newVel = new
+				 * double[PSOUtility.getDimension(iProblemSet)]; for (int j = 0;
+				 * j < newVel.length; j++) { newVel[j] =
+				 * (p.getVelocity().getPos()[j]) + (r1 * C1) *
+				 * (pBestLocation.get(i).getLoc()[j] -
+				 * p.getLocation().getLoc()[j]) + (r2 * C2) *
+				 * (lBestLocation.get(i).getLoc()[j] -
+				 * p.getLocation().getLoc()[j]); }
+				 */
 
 				Velocity vel = new Velocity(newVel);
 				p.setVelocity(vel);
@@ -119,9 +136,9 @@ public class PSOProcess implements PSOConstants {
 			}
 
 			err = gBest - 0; // minimizing the
-										// functions means
-										// it's getting
-										// closer to 0
+								// functions means
+								// it's getting
+								// closer to 0
 
 			messages.add("ITERATION " + t + ": ");
 			for (int i = 0; i < gBestLocation.getLoc().length; i++) {
@@ -140,6 +157,9 @@ public class PSOProcess implements PSOConstants {
 	}
 
 	public void initializeSwarm(IProblemSet iProblemSet) {
+		if (logger.isInfoEnabled()) {
+			logger.info(MessageUtils.createMessage(SIMULATION_PSO_SWARM_SIZE, SWARM_SIZE));
+		}
 		Particle p;
 		for (int i = 0; i < SWARM_SIZE; i++) {
 			p = new Particle();
@@ -167,6 +187,9 @@ public class PSOProcess implements PSOConstants {
 
 			p.setLocation(location);
 			p.setVelocity(velocity);
+			if (logger.isInfoEnabled()) {
+				logger.info(MessageUtils.createMessage(SIMULATION_PSO_PARTICLE_DATA, i, p));
+			}
 			swarm.add(p);
 		}
 	}
@@ -174,6 +197,10 @@ public class PSOProcess implements PSOConstants {
 	public void updateFitnessList(IProblemSet iProblemSet) {
 		for (int i = 0; i < SWARM_SIZE; i++) {
 			fitnessValueList[i] = swarm.get(i).getFitnessValue(iProblemSet);
+			if (logger.isInfoEnabled()) {
+				logger.info(MessageUtils.createMessage(SIMULATION_PSO_PARTICLE_FITNESS, i,
+						ConvertUtils.convertToString(fitnessValueList[i])));
+			}
 		}
 	}
 

@@ -30,10 +30,8 @@ public class Topology {
 			final int prime = 31;
 			int result = 1;
 			result = prime * result + getOuterType().hashCode();
-			result = prime * result
-					+ ((sourceIndex == null) ? 0 : sourceIndex.hashCode());
-			result = prime * result
-					+ ((targetIndex == null) ? 0 : targetIndex.hashCode());
+			result = prime * result + ((sourceIndex == null) ? 0 : sourceIndex.hashCode());
+			result = prime * result + ((targetIndex == null) ? 0 : targetIndex.hashCode());
 			return result;
 		}
 
@@ -72,7 +70,7 @@ public class Topology {
 	private Map<Path, Path> dualPath;
 	private List<IsPhysicalElement> physicalElements;
 	private Map<PhysicalElementIndexPair, Link> indexMap;
-	private Map<PhysicalElementPair, List<Path>> pathMap;
+	private Map<PhysicalElementPair, ComplexPath> pathMap;
 
 	public Topology() {
 		super();
@@ -81,7 +79,7 @@ public class Topology {
 		this.links = new ArrayList<Link>();
 		this.physicalElements = new ArrayList<IsPhysicalElement>();
 		this.indexMap = new HashMap<Topology.PhysicalElementIndexPair, Link>();
-		this.pathMap = new HashMap<PhysicalElementPair, List<Path>>();
+		this.pathMap = new HashMap<PhysicalElementPair, ComplexPath>();
 	}
 
 	public List<Link> getLinks() {
@@ -106,18 +104,14 @@ public class Topology {
 		for (Link link : route.getLinks()) {
 			Link dualLink = getDualLink(link);
 			if (doConnection) {// Insert the connection
-				link.setSlotsAsOccupied(route.getInitialSlot(),
-						route.getFinalSlot());
+				link.setSlotsAsOccupied(route.getInitialSlot(), route.getFinalSlot());
 				if (dualLink != null)
-					dualLink.setSlotsAsOccupied(route.getInitialSlot(),
-							route.getFinalSlot());
+					dualLink.setSlotsAsOccupied(route.getInitialSlot(), route.getFinalSlot());
 			} else {
 				// Remove the connection
-				link.setSlotsAsUnoccupied(route.getInitialSlot(),
-						route.getFinalSlot());
+				link.setSlotsAsUnoccupied(route.getInitialSlot(), route.getFinalSlot());
 				if (dualLink != null)
-					dualLink.setSlotsAsUnoccupied(route.getInitialSlot(),
-							route.getFinalSlot());
+					dualLink.setSlotsAsUnoccupied(route.getInitialSlot(), route.getFinalSlot());
 			}
 		}
 	}
@@ -188,14 +182,12 @@ public class Topology {
 	private void addIndexLink(Link link) {
 		String sourceIndex = link.getSourceNode().getIndex();
 		String targetIndex = link.getTargetNode().getIndex();
-		PhysicalElementIndexPair elementIndexPair = new PhysicalElementIndexPair(
-				sourceIndex, targetIndex);
+		PhysicalElementIndexPair elementIndexPair = new PhysicalElementIndexPair(sourceIndex, targetIndex);
 		indexMap.put(elementIndexPair, link);
 	}
 
 	public Link getLink(String sourceIndex, String targetIndex) {
-		PhysicalElementIndexPair elementIndexPair = new PhysicalElementIndexPair(
-				sourceIndex, targetIndex);
+		PhysicalElementIndexPair elementIndexPair = new PhysicalElementIndexPair(sourceIndex, targetIndex);
 		return indexMap.get(elementIndexPair);
 	}
 
@@ -213,17 +205,16 @@ public class Topology {
 
 	public void addPath(PhysicalElementPair elementPair, Route route) {
 		if (!pathMap.containsKey(elementPair)) {
-			pathMap.put(elementPair, new ArrayList<Path>());
+			pathMap.put(elementPair, new ComplexPath());
 		}
 		pathMap.get(elementPair).add(route.getPath());
 	}
 
 	public List<Path> getPaths(PhysicalElementPair physicalElementPair) {
-		return pathMap.get(physicalElementPair);
+		return pathMap.get(physicalElementPair) != null ? pathMap.get(physicalElementPair).getPaths() : null;
 	}
 
-	public void updateLinksCost(int iteration,
-			IsLinkCostFunction linkCostFunction, double alfa,
+	public void updateLinksCost(int iteration, IsLinkCostFunction linkCostFunction, double alfa,
 			List<LinksCostWrapper> linksCostWrappers) {
 		if (iteration != 0) {
 			double occupactionFactor = linkCostFunction.getOccupation(links);
@@ -232,15 +223,13 @@ public class Topology {
 		}
 	}
 
-	private void saveLinksCost(double maxAllocatedSlots,
-			List<LinksCostWrapper> linksCostWrappers) {
+	private void saveLinksCost(double maxAllocatedSlots, List<LinksCostWrapper> linksCostWrappers) {
 		if (linksCostWrappers != null) {
 			List<String> linksCost = new ArrayList<String>();
 			for (Link link : links) {
 				linksCost.add(ConvertUtils.convertToString(link.getCost()));
 			}
-			linksCostWrappers.add(new LinksCostWrapper(maxAllocatedSlots,
-					linksCost));
+			linksCostWrappers.add(new LinksCostWrapper(maxAllocatedSlots, linksCost));
 		}
 	}
 

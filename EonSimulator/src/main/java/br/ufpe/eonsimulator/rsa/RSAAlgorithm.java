@@ -63,7 +63,7 @@ public abstract class RSAAlgorithm implements IsRSAAlgorithm {
 				connection.setNumberSlotRequired(routeWrapper.getnSlots());
 				connection.setRequiredOSNR(routeWrapper.getRequiredOSNR());
 				if (rsaWrapper.isValid()) {
-					if (logger.isInfoEnabled()) {
+					if (logger.isDebugEnabled()) {
 						logger.info(MessageUtils.createMessage(SIMULATION_ROUTE_BESTROUTE_INFO,
 								routeWrapper.getRoute().getSeparatedElementsIndex(), routeWrapper.isPathValid(),
 								routeWrapper.isOSNRValid(), connection.getNumberSlotRequired(),
@@ -75,7 +75,7 @@ public abstract class RSAAlgorithm implements IsRSAAlgorithm {
 				}
 
 			}
-			if (!isValidRouteWrapper && logger.isInfoEnabled()) {
+			if (!isValidRouteWrapper && logger.isDebugEnabled()) {
 				logger.info(MessageUtils.createMessage(SIMULATION_ROUTE_TRY_NEW_MODULATIONFORMAT_INFO,
 						MathUtils.convertLinearTodB(connection.getRequiredOSNR()), connection.getNumberSlotRequired()));
 			}
@@ -136,7 +136,7 @@ public abstract class RSAAlgorithm implements IsRSAAlgorithm {
 
 	protected RSAWrapper createRSAWrapperAndDoLog(String index, Route route, Simulation simulation,
 			Connection connection, IsModulationFormat modulationFormat, int nSlots) {
-		if (logger.isInfoEnabled()) {
+		if (logger.isDebugEnabled()) {
 			logger.info("Estados dos slots : " + route.getSlotOccupancyCollection().printOccupancy());
 		}
 		return createRSAWrapper(index, route, simulation, connection, modulationFormat, nSlots);
