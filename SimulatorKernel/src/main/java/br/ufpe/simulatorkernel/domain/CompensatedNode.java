@@ -47,7 +47,7 @@ public class CompensatedNode extends IsPhysicalElement {
 	public double getG() {
 		double d = node.getG();
 		if (logger.isDebugEnabled()) {
-			logger.info(MessageUtils.createMessage(NODE_INFO_G_RESULT,
+			logger.debug(MessageUtils.createMessage(NODE_INFO_G_RESULT,
 					getIndex(), d));
 		}
 		return d * nodeLineAmplifier.getG();
@@ -56,7 +56,7 @@ public class CompensatedNode extends IsPhysicalElement {
 	@Override
 	public void setGdB(double g) {
 		if (logger.isDebugEnabled()) {
-			logger.info(MessageUtils.createMessage(NODE_INFO_G_SET, getIndex(),
+			logger.debug(MessageUtils.createMessage(NODE_INFO_G_SET, getIndex(),
 					g));
 		}
 		node.setGdB(g);
