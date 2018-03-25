@@ -14,6 +14,7 @@ public class Path {
 	private List<Link> links;
 	private Double osnr;
 	private Double distance;
+	private int numberOfActiveConnections;
 
 	public Path() {
 		super();
@@ -24,8 +25,7 @@ public class Path {
 	public int getNumberSlots() {
 		int numberSlot = 0;
 		if (links != null && !links.isEmpty()) {
-			numberSlot = links.get(0).getOcSpectrumCollection()
-					.getNumberSlots();
+			numberSlot = links.get(0).getOcSpectrumCollection().getNumberSlots();
 		}
 		return numberSlot;
 	}
@@ -50,8 +50,7 @@ public class Path {
 	public String getSeparatedElementsIndex() {
 		String string = "";
 		for (Link link : links) {
-			string += link.getSourceNode().getIndex() + " "
-					+ link.getTargetNode().getIndex() + " ";
+			string += link.getSourceNode().getIndex() + " " + link.getTargetNode().getIndex() + " ";
 		}
 		return string;
 	}
@@ -123,5 +122,19 @@ public class Path {
 			collection.mergeOccupancy(link.getOcSpectrumCollection());
 		}
 		return collection;
+	}
+
+	public int getNumberOfActiveConnections() {
+		return numberOfActiveConnections;
+	}
+
+	public void decreaseActiveConnections() {
+		numberOfActiveConnections--;
+		
+	}
+
+	public void incrementActiveConnections() {
+		numberOfActiveConnections++;
+		
 	}
 }

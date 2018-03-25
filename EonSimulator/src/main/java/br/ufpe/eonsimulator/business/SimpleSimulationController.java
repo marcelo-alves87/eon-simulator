@@ -78,7 +78,7 @@ public class SimpleSimulationController extends AbstractSimulationController imp
 								simulation, connection);
 
 						if (simulationRouteWrapper != null && simulationRouteWrapper.isValid()) {
-							if (logger.isDebugEnabled()) {
+							if (logger.isInfoEnabled()) {
 								logger.info(MessageUtils.createMessage(SIMULATION_VALID_PATH_OSNR_INFO));
 							}
 							connection.setRoute(simulationRouteWrapper.getRoute());
@@ -88,19 +88,19 @@ public class SimpleSimulationController extends AbstractSimulationController imp
 							simulation.getSimulationResults()
 									.incrementNumberOfBitRateBlockedRequest(connection.getRequestedBitRate());
 							if (simulationRouteWrapper == null) {
-								if (logger.isDebugEnabled()) {
+								if (logger.isInfoEnabled()) {
 									logger.info(MessageUtils.createMessage(SIMULATION_INVALID_PATH_INFO));
 								}
 								simulation.getSimulationResults().incrementNumberOfNetworkBlockedRequests();
 							} else if (!simulationRouteWrapper.isOSNRValid()) {
-								if (logger.isDebugEnabled()) {
+								if (logger.isInfoEnabled()) {
 									logger.info(MessageUtils.createMessage(SIMULATION_INVALID_OSNR_INFO));
 								}
 								simulation.getSimulationResults().incrementNumberOfPhysicalBlocking();
 							}
 						}
 					} else {
-						if (logger.isDebugEnabled()) {
+						if (logger.isInfoEnabled()) {
 							logger.info(MessageUtils.createMessage(SIMULATION_ROUTE_NOT_FOUND,
 									connection.getPhysicalElementPair().getSource().getIndex(),
 									connection.getPhysicalElementPair().getTarget().getIndex()));

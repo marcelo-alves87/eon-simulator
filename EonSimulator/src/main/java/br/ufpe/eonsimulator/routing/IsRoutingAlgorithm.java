@@ -51,7 +51,7 @@ public abstract class IsRoutingAlgorithm {
 	}
 
 	private void doLog(List<Route> routes) {
-		if (logger.isDebugEnabled() && routes != null) {
+		if (logger.isInfoEnabled() && routes != null) {
 			logger.info(MessageUtils.createMessage(ROUTE_INFO));
 			for (Route route : routes) {
 				logger.info(MessageUtils.createMessage(ROUTE_INFO_INDEXS, route.getSeparatedElementsIndex()));

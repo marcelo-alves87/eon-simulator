@@ -88,10 +88,30 @@ public class Topology {
 
 	public void disconnect(Route route) {
 		connect(route, false);
+
+		if (getDualRoute(route) != null) {
+			Route dualRote = getDualRoute(route);
+			if (dualRote.getPath() != null) {
+				dualRote.getPath().decreaseActiveConnections();
+			}
+		}
+		if(route.getPath() != null) {
+			route.getPath().decreaseActiveConnections();
+		}
 	}
 
 	public void connect(Route route) {
 		connect(route, true);
+		
+		if (getDualRoute(route) != null) {
+			Route dualRote = getDualRoute(route);
+			if (dualRote.getPath() != null) {
+				dualRote.getPath().incrementActiveConnections();
+			}
+		}
+		if(route.getPath() != null) {
+			route.getPath().incrementActiveConnections();
+		}
 	}
 
 	public void updateAllocatedSlots(Route route, int nSlots) {

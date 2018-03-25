@@ -30,7 +30,7 @@ public abstract class RSAWrapper implements Comparable<RSAWrapper> {
 	}
 
 	public void doLog() {
-		if (logger.isDebugEnabled()) {
+		if (logger.isInfoEnabled()) {
 			logger.info(MessageUtils.createMessage(SIMULATION_ROUTE_INFO,
 					isPathValid, isOSNRValid, route.getSeparatedElementsIndex()));
 		}

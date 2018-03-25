@@ -18,7 +18,7 @@ public abstract class QAMModulationFormat implements IsModulationFormat {
 				.getConnectionSlotWidth();
 		double osnr = bitRate * MathUtils.converdBToLinear(getRequiredSNRdB())
 				/ (2 * slotWidth);
-		if (logger.isDebugEnabled()) {
+		if (logger.isInfoEnabled()) {
 			logger.info(MessageUtils.createMessage(QAMMODULATION_OSNR_KEY,
 					bitRate, MathUtils.convertLinearTodB(osnr)));
 		}
@@ -30,7 +30,7 @@ public abstract class QAMModulationFormat implements IsModulationFormat {
 	@Override
 	public int createNumberOfRequiredSlots(double slotWidth, double bitRate) {
 		int nSlots = (int) Math.ceil((bitRate / getNSymbol()) / slotWidth);
-		if (logger.isDebugEnabled()) {
+		if (logger.isInfoEnabled()) {
 			logger.info(MessageUtils.createMessage(QAMMODULATION_NSLOTS_KEY,
 					nSlots));
 		}
