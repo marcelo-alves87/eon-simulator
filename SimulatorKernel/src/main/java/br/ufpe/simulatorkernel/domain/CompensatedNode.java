@@ -46,7 +46,7 @@ public class CompensatedNode extends IsPhysicalElement {
 	@Override
 	public double getG() {
 		double d = node.getG();
-		if (logger.isInfoEnabled()) {
+		if (logger.isDebugEnabled()) {
 			logger.info(MessageUtils.createMessage(NODE_INFO_G_RESULT,
 					getIndex(), d));
 		}
@@ -55,7 +55,7 @@ public class CompensatedNode extends IsPhysicalElement {
 
 	@Override
 	public void setGdB(double g) {
-		if (logger.isInfoEnabled()) {
+		if (logger.isDebugEnabled()) {
 			logger.info(MessageUtils.createMessage(NODE_INFO_G_SET, getIndex(),
 					g));
 		}

@@ -54,7 +54,7 @@ public class Fiber extends IsPhysicalElement implements GNLIPhysicalProperties {
 			/*
 			 * GNLI gnli = GNLIFactory.createGnli(slotOccupancyCollection, this,
 			 * powerList); nli = GNLIFactory.calculateGnli(gnli); if
-			 * (logger.isInfoEnabled()) {
+			 * (logger.isDebugEnabled()) {
 			 * logger.info(MessageUtils.createMessage(FIBER_GNLI_INFO,
 			 * ConvertUtils.convertToString(MathUtils
 			 * .convertLinearTodBm(nli)))); }
