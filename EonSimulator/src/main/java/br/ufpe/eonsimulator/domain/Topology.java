@@ -70,7 +70,7 @@ public class Topology {
 	private Map<Path, Path> dualPath;
 	private List<IsPhysicalElement> physicalElements;
 	private Map<PhysicalElementIndexPair, Link> indexMap;
-	private Map<PhysicalElementPair, ComplexPath> pathMap;
+	private Map<PhysicalElementPair, List<Path>> pathMap;
 
 	public Topology() {
 		super();
@@ -79,7 +79,7 @@ public class Topology {
 		this.links = new ArrayList<Link>();
 		this.physicalElements = new ArrayList<IsPhysicalElement>();
 		this.indexMap = new HashMap<Topology.PhysicalElementIndexPair, Link>();
-		this.pathMap = new HashMap<PhysicalElementPair, ComplexPath>();
+		this.pathMap = new HashMap<PhysicalElementPair, List<Path>>();
 	}
 
 	public List<Link> getLinks() {
@@ -205,13 +205,13 @@ public class Topology {
 
 	public void addPath(PhysicalElementPair elementPair, Route route) {
 		if (!pathMap.containsKey(elementPair)) {
-			pathMap.put(elementPair, new ComplexPath());
+			pathMap.put(elementPair, new ArrayList<Path>());
 		}
 		pathMap.get(elementPair).add(route.getPath());
 	}
 
 	public List<Path> getPaths(PhysicalElementPair physicalElementPair) {
-		return pathMap.get(physicalElementPair) != null ? pathMap.get(physicalElementPair).getPaths() : null;
+		return pathMap.get(physicalElementPair);
 	}
 
 	public void updateLinksCost(int iteration, IsLinkCostFunction linkCostFunction, double alfa,
