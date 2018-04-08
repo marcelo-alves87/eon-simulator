@@ -29,6 +29,9 @@ public class SimulationControllerFactory {
 		case 4:
 			simulationController = new PSOSimulationController();
 			break;
+		case 5:
+			simulationController = new GeneticAlgorithmSimulationController();
+			break;
 		default:
 			break;
 		}
