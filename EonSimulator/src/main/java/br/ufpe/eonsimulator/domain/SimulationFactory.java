@@ -36,6 +36,7 @@ public class SimulationFactory {
 	private static final String GRAPH_POINTS_KEY = "simulation.parameters.graphPoints";
 	private static final String SIMULATION_RESULTS_MODE = "simulation.results.mode";
 	private static final String SIMULATION_RESULTS_SETSIZE = "simulation.result.setSize";
+	private static final String SIMULATION_GENETIC_ALGORITHM_K = "simulation.geneticAlgorithm.k";
 
 	private static final String CONNECTION_MAXBITRATE_KEY = "simulation.parameters.maxBitRate";
 
@@ -46,73 +47,50 @@ public class SimulationFactory {
 			logger.info(MessageUtils.createMessage(SIMULATION_FACTORY_INFO));
 		}
 		Simulation simulation = new Simulation();
-		simulation.setIsAssignmentAlgorithm(SpectrumAssignmentFactory
-				.createSpectrumAssignmentAlgorithm(properties));
-		simulation.setIsRoutingAlgorithm(RoutingAlgorithmFactory
-				.createRoutingAlgorithm(properties));
-		simulation.setMaxNumberConnection(ConvertUtils
-				.convertToInteger(properties
-						.getProperty(NUMBER_OF_REQUESTS_KEY)));
-		simulation.setAlfa(ConvertUtils.convertToDouble(properties
-				.getProperty(SIMULATION_ALFA_KEY)));
-		simulation.setOutputLinkCostFunction(OutputLinkCostFunctionFactory
-				.createIsOutputLinkCostFunction(properties));
-		simulation.setNumberOfIterations(ConvertUtils
-				.convertToInteger(properties
-						.getProperty(NUMBER_OF_ITERATIONS_KEY)));
-		simulation.setMaxSimulationTime(getMaxSimulationTime(properties));
-		simulation.setCostFunction(CostFunctionFactory
-				.createCostFunction(properties));
-		simulation.setModulationFormats(ModulationFormatFactory
-				.createModulationFormats(properties));
-		simulation.setTrafficGenerator(TrafficGeneratorFactory
-				.createTrafficGenerator(properties));
-		simulation.setRSAAlgorithm(RSAAlgorithmFactory.createRsaAlgorithm(
-				properties, ModulationFormatComparatorFactory
-						.createModulationFormatComparator(properties)));
-		simulation.setResultSetSize(ConvertUtils.convertToInteger(properties
-				.getProperty(SIMULATION_RESULTS_SETSIZE)));
-		simulation.setLinkCostFunction(LinkCostFunctionFactory
-				.createLinkCostFunction(properties));
+		simulation.setIsAssignmentAlgorithm(SpectrumAssignmentFactory.createSpectrumAssignmentAlgorithm(properties));
+		simulation.setIsRoutingAlgorithm(RoutingAlgorithmFactory.createRoutingAlgorithm(properties));
 		simulation
-				.setSimulationResultsType(createSimulationResultsType(properties));
+				.setMaxNumberConnection(ConvertUtils.convertToInteger(properties.getProperty(NUMBER_OF_REQUESTS_KEY)));
+		simulation.setAlfa(ConvertUtils.convertToDouble(properties.getProperty(SIMULATION_ALFA_KEY)));
+		simulation.setOutputLinkCostFunction(OutputLinkCostFunctionFactory.createIsOutputLinkCostFunction(properties));
+		simulation
+				.setNumberOfIterations(ConvertUtils.convertToInteger(properties.getProperty(NUMBER_OF_ITERATIONS_KEY)));
+		simulation.setMaxSimulationTime(getMaxSimulationTime(properties));
+		simulation.setCostFunction(CostFunctionFactory.createCostFunction(properties));
+		simulation.setModulationFormats(ModulationFormatFactory.createModulationFormats(properties));
+		simulation.setTrafficGenerator(TrafficGeneratorFactory.createTrafficGenerator(properties));
+		simulation.setRSAAlgorithm(RSAAlgorithmFactory.createRsaAlgorithm(properties,
+				ModulationFormatComparatorFactory.createModulationFormatComparator(properties)));
+		simulation.setResultSetSize(ConvertUtils.convertToInteger(properties.getProperty(SIMULATION_RESULTS_SETSIZE)));
+		simulation.setLinkCostFunction(LinkCostFunctionFactory.createLinkCostFunction(properties));
+		simulation.setSimulationResultsType(createSimulationResultsType(properties));
 		SimulationParameters parameters = new SimulationParameters();
-		parameters.setConnectionDeathRate(ConvertUtils
-				.convertToDouble(properties
-						.getProperty(CONNECTION_DEATHRATE_KEY)));
-		parameters.setConnectionExpandible(ConvertUtils
-				.convertToBoolean(properties
-						.getProperty(CONNECTION_ISCONNECTIONEXPANDIBLE_KEY)));
-		parameters.setConnectionSlotWidth(ConvertUtils
-				.convertToDouble(properties
-						.getProperty(CONNECTION_SLOTWIDTH_KEY)));
-		parameters.setConnectionMaxArrival(ConvertUtils
-				.convertToDouble(properties
-						.getProperty(CONNECTION_MAXARRIVAL_KEY)));
-		parameters.setConnectionMaxBitRate(ConvertUtils
-				.convertToDouble(properties
-						.getProperty(CONNECTION_MAXBITRATE_KEY)));
-		parameters.setConnectionMinBitRate(ConvertUtils
-				.convertToDouble(properties
-						.getProperty(CONNECTION_MINBITRATE_KEY)));
-		parameters.setConnectionMinArrival(ConvertUtils
-				.convertToDouble(properties
-						.getProperty(CONNECTION_MINARRIVAL_KEY)));
-		parameters.setNumberGraphPoints(ConvertUtils
-				.convertToInteger(properties.getProperty(GRAPH_POINTS_KEY)));
+		parameters
+				.setConnectionDeathRate(ConvertUtils.convertToDouble(properties.getProperty(CONNECTION_DEATHRATE_KEY)));
+		parameters.setConnectionExpandible(
+				ConvertUtils.convertToBoolean(properties.getProperty(CONNECTION_ISCONNECTIONEXPANDIBLE_KEY)));
+		parameters
+				.setConnectionSlotWidth(ConvertUtils.convertToDouble(properties.getProperty(CONNECTION_SLOTWIDTH_KEY)));
+		parameters.setConnectionMaxArrival(
+				ConvertUtils.convertToDouble(properties.getProperty(CONNECTION_MAXARRIVAL_KEY)));
+		parameters.setConnectionMaxBitRate(
+				ConvertUtils.convertToDouble(properties.getProperty(CONNECTION_MAXBITRATE_KEY)));
+		parameters.setConnectionMinBitRate(
+				ConvertUtils.convertToDouble(properties.getProperty(CONNECTION_MINBITRATE_KEY)));
+		parameters.setConnectionMinArrival(
+				ConvertUtils.convertToDouble(properties.getProperty(CONNECTION_MINARRIVAL_KEY)));
+		parameters.setNumberGraphPoints(ConvertUtils.convertToInteger(properties.getProperty(GRAPH_POINTS_KEY)));
+		parameters.setGeneticAlgorithmK(
+				ConvertUtils.convertToInteger(properties.getProperty(SIMULATION_GENETIC_ALGORITHM_K)));
 		simulation.setSimulationParams(parameters);
-		Properties topologyProperties = PropertiesUtils
-				.createPropertiesFromResource(TOPOLOGY_PROPERTIES);
-		simulation.setTopology(TopologyFactory
-				.createTopology(topologyProperties));
+		Properties topologyProperties = PropertiesUtils.createPropertiesFromResource(TOPOLOGY_PROPERTIES);
+		simulation.setTopology(TopologyFactory.createTopology(topologyProperties));
 		return simulation;
 	}
 
-	private static SimulationResultsType createSimulationResultsType(
-			Properties properties) {
+	private static SimulationResultsType createSimulationResultsType(Properties properties) {
 		SimulationResultsType simulationResultsType = null;
-		int type = ConvertUtils.convertToInteger(properties
-				.getProperty(SIMULATION_RESULTS_MODE));
+		int type = ConvertUtils.convertToInteger(properties.getProperty(SIMULATION_RESULTS_MODE));
 		switch (type) {
 		case 0:
 			simulationResultsType = SimulationResultsType.BITRATE;
@@ -136,8 +114,7 @@ public class SimulationFactory {
 	}
 
 	private static double getMaxSimulationTime(Properties properties) {
-		double maxSimulationTime = ConvertUtils.convertToDouble(properties
-				.getProperty(MAX_SIMULATIONTIME_KEY));
+		double maxSimulationTime = ConvertUtils.convertToDouble(properties.getProperty(MAX_SIMULATIONTIME_KEY));
 		return maxSimulationTime > 0 ? maxSimulationTime : Double.MAX_VALUE;
 	}
 }

@@ -11,6 +11,7 @@ public class SimulationParameters {
 	private int numberGraphPoints;
 	private boolean isConnectionExpandible;
 	private double connectionSlotWidth;
+	private int geneticAlgorithmK;
 
 	public double getConnectionDeathRate() {
 		return connectionDeathRate;
@@ -99,6 +100,14 @@ public class SimulationParameters {
 	public void clearArrivalRate() {
 		connectionCurrentArrivalRate = connectionMinArrival;
 
+	}
+
+	public int getGeneticAlgorithmK() {
+		return geneticAlgorithmK;
+	}
+
+	public void setGeneticAlgorithmK(int geneticAlgorithmK) {
+		this.geneticAlgorithmK = geneticAlgorithmK;
 	}
 
 }
