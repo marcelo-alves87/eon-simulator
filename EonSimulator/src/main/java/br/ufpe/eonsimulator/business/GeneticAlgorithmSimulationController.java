@@ -34,15 +34,17 @@ public class GeneticAlgorithmSimulationController extends AbstractSimulationCont
 														// individuos vão ser
 														// escolhidos, 40%
 														// aleatorios
-	private static final long NUMBER_OF_REQUESTS = 100000;
+	private static final long NUMBER_OF_REQUESTS = 1000000;
 
 	private static final int NUMBER_OF_ITERATIONS = 100;
+
+	private static final double MIN_ARRIVAL = 80;
+	private static final double MAX_ARRIVAL = 120;
 
 	private List<Individual> individuals;
 
 	@Override
 	public void run(Simulation simulation) {
-
 		// 1 - Rodar a topologia com YEN
 		// 2 - Pegar suas rotas para todos os pares origem-destino, colocar num
 		// map de conexao no origem-destino e conjunto de rotas (k10)
@@ -69,6 +71,13 @@ public class GeneticAlgorithmSimulationController extends AbstractSimulationCont
 			printTheBest(i);
 		}
 
+		simulation.getSimulationParameters().setConnectionMaxArrival(MAX_ARRIVAL);
+		simulation.getSimulationParameters().setConnectionMinArrival(MIN_ARRIVAL);
+		simulation.clearArrivalRate();
+		do {
+			fitnessIndividual(simulation, individuals.get(0));
+			System.out.println(ConvertUtils.convertToLocaleString(individuals.get(0).getBlockingProbability()));
+		} while (simulation.nextSimulation());
 	}
 
 	private void printTheBest(int i) {
@@ -93,7 +102,7 @@ public class GeneticAlgorithmSimulationController extends AbstractSimulationCont
 	private Individual crossIndividuals(Individual a, Individual b, double crossRate) {
 		if (crossRate > CROSSING_CONSTANT) {
 			crossRate = CROSSING_CONSTANT;
-		} 
+		}
 		Individual newIndividual = new Individual();
 		int sizeA = a.getPhysicalElementPairRoutesMap().size();
 		int sizeB = b.getPhysicalElementPairRoutesMap().size();
@@ -139,48 +148,52 @@ public class GeneticAlgorithmSimulationController extends AbstractSimulationCont
 	private void fitnessIndividuals(Simulation simulation) {
 		for (Individual individual : individuals) {
 			simulation.clearArrivalRate();
-			simulation.clear();
-			simulation.getSimulationResults().setNumberOfRequests(NUMBER_OF_REQUESTS);
-			for (int numberConnectionIndex = 0; numberConnectionIndex < NUMBER_OF_REQUESTS; numberConnectionIndex++) {
-				simulation.clearElapsedConnections(); // Removes all the
-														// connections with
-														// elapsed time;
-				// Defines the node pair, the bit rate and the death time of
-				// the
-				// connection
-				Connection connection = simulation.getTrafficGenerator().createConnection(simulation);
-				simulation.getSimulationResults().incrementNumberOfRequests();
-				simulation.getSimulationResults().incrementNumberOfRequest(connection.getRequestedBitRate());
-				// Calculate the routes using the routing algorithm
-				List<Route> routesFromSimulation = simulation.getIsRoutingAlgorithm().createRoutes(connection,
-						simulation.getTopology(), simulation.getCostFunction());
-				List<Route> routesFromIndividual = getRoutesFromIndividual(connection, individual);
-				List<Route> routesForSimulation = setRoutesForSimulation(routesFromSimulation, routesFromIndividual,
-						simulation.getSimulationParameters().getGeneticAlgorithmK());
-				// If routing returned at least one route solution:
-				if (routesForSimulation != null && !routesForSimulation.isEmpty()) {
-					RSAWrapper simulationRouteWrapper = simulation.getRSAAlgorithm().getRSAWrapper(routesForSimulation,
-							simulation, connection);
-
-					if (simulationRouteWrapper != null && simulationRouteWrapper.isValid()) {
-						connection.setRoute(simulationRouteWrapper.getRoute());
-						simulation.getTopology().connect(simulationRouteWrapper.getRoute());
-						simulation.addConnection(connection);
-					} else {
-						if (simulationRouteWrapper == null) {
-							simulation.getSimulationResults().incrementNumberOfNetworkBlockedRequests();
-						} else if (!simulationRouteWrapper.isOSNRValid()) {
-							simulation.getSimulationResults().incrementNumberOfPhysicalBlocking();
-						}
-					}
-				} else {
-					simulation.getSimulationResults().incrementNumberOfBlockedRequests();
-				}
-				simulation.setSimulationTime(
-						simulation.getTrafficGenerator().getArrivalTimeGen().getArrivalTime(simulation));
-			}
-			individual.setBlockingProbability(simulation.getSimulationResults().getBlockingProbability());
+			fitnessIndividual(simulation, individual);
 		}
+	}
+
+	private void fitnessIndividual(Simulation simulation, Individual individual) {
+		simulation.clear();
+		simulation.getSimulationResults().setNumberOfRequests(NUMBER_OF_REQUESTS);
+		for (int numberConnectionIndex = 0; numberConnectionIndex < NUMBER_OF_REQUESTS; numberConnectionIndex++) {
+			simulation.clearElapsedConnections(); // Removes all the
+													// connections with
+													// elapsed time;
+			// Defines the node pair, the bit rate and the death time of
+			// the
+			// connection
+			Connection connection = simulation.getTrafficGenerator().createConnection(simulation);
+			simulation.getSimulationResults().incrementNumberOfRequests();
+			simulation.getSimulationResults().incrementNumberOfRequest(connection.getRequestedBitRate());
+			// Calculate the routes using the routing algorithm
+			List<Route> routesFromSimulation = simulation.getIsRoutingAlgorithm().createRoutes(connection,
+					simulation.getTopology(), simulation.getCostFunction());
+			List<Route> routesFromIndividual = getRoutesFromIndividual(connection, individual);
+			List<Route> routesForSimulation = setRoutesForSimulation(routesFromSimulation, routesFromIndividual,
+					simulation.getSimulationParameters().getGeneticAlgorithmK());
+			// If routing returned at least one route solution:
+			if (routesForSimulation != null && !routesForSimulation.isEmpty()) {
+				RSAWrapper simulationRouteWrapper = simulation.getRSAAlgorithm().getRSAWrapper(routesForSimulation,
+						simulation, connection);
+
+				if (simulationRouteWrapper != null && simulationRouteWrapper.isValid()) {
+					connection.setRoute(simulationRouteWrapper.getRoute());
+					simulation.getTopology().connect(simulationRouteWrapper.getRoute());
+					simulation.addConnection(connection);
+				} else {
+					if (simulationRouteWrapper == null) {
+						simulation.getSimulationResults().incrementNumberOfNetworkBlockedRequests();
+					} else if (!simulationRouteWrapper.isOSNRValid()) {
+						simulation.getSimulationResults().incrementNumberOfPhysicalBlocking();
+					}
+				}
+			} else {
+				simulation.getSimulationResults().incrementNumberOfBlockedRequests();
+			}
+			simulation
+					.setSimulationTime(simulation.getTrafficGenerator().getArrivalTimeGen().getArrivalTime(simulation));
+		}
+		individual.setBlockingProbability(simulation.getSimulationResults().getBlockingProbability());
 	}
 
 	private List<Route> setRoutesForSimulation(List<Route> routesFromSimulation, List<Route> routesFromIndividual,
