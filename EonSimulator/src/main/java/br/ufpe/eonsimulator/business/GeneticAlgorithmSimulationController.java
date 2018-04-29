@@ -34,12 +34,15 @@ public class GeneticAlgorithmSimulationController extends AbstractSimulationCont
 														// individuos vão ser
 														// escolhidos, 40%
 														// aleatorios
-	private static final long NUMBER_OF_REQUESTS = 1000000;
+	private static final long NUMBER_OF_REQUESTS = 100000;
 
-	private static final int NUMBER_OF_ITERATIONS = 100;
+	private static final int NUMBER_OF_ITERATIONS = 10;
 
+	// TODO: Colocar essas variaveis no simulation.properties
 	private static final double MIN_ARRIVAL = 80;
 	private static final double MAX_ARRIVAL = 120;
+	private static final List<Integer> SIMULATION_K_LIST = new ArrayList<Integer>();
+	private static final long SIMULATION_NUMBER_OF_REQUESTS = 100000;
 
 	private List<Individual> individuals;
 
@@ -74,10 +77,19 @@ public class GeneticAlgorithmSimulationController extends AbstractSimulationCont
 		simulation.getSimulationParameters().setConnectionMaxArrival(MAX_ARRIVAL);
 		simulation.getSimulationParameters().setConnectionMinArrival(MIN_ARRIVAL);
 		simulation.clearArrivalRate();
-		do {
-			fitnessIndividual(simulation, individuals.get(0));
-			System.out.println(ConvertUtils.convertToLocaleString(individuals.get(0).getBlockingProbability()));
-		} while (simulation.nextSimulation());
+		SIMULATION_K_LIST.clear();
+		SIMULATION_K_LIST.add(1);
+		SIMULATION_K_LIST.add(3);
+		SIMULATION_K_LIST.add(5);
+		SIMULATION_K_LIST.add(7);
+		for (Integer integer : SIMULATION_K_LIST) {
+			simulation.clearArrivalRate();
+			System.out.println("Simulação com " + integer + " rota(s) alternativa(s):");
+			do {
+				fitnessIndividual(simulation, individuals.get(0), integer, SIMULATION_NUMBER_OF_REQUESTS);
+				System.out.println(ConvertUtils.convertToLocaleString(individuals.get(0).getBlockingProbability()));
+			} while (simulation.nextSimulation());
+		}
 	}
 
 	private void printTheBest(int i) {
@@ -148,14 +160,15 @@ public class GeneticAlgorithmSimulationController extends AbstractSimulationCont
 	private void fitnessIndividuals(Simulation simulation) {
 		for (Individual individual : individuals) {
 			simulation.clearArrivalRate();
-			fitnessIndividual(simulation, individual);
+			fitnessIndividual(simulation, individual, simulation.getSimulationParameters().getGeneticAlgorithmK(),
+					NUMBER_OF_REQUESTS);
 		}
 	}
 
-	private void fitnessIndividual(Simulation simulation, Individual individual) {
+	private void fitnessIndividual(Simulation simulation, Individual individual, int k, long numberOfRequests) {
 		simulation.clear();
-		simulation.getSimulationResults().setNumberOfRequests(NUMBER_OF_REQUESTS);
-		for (int numberConnectionIndex = 0; numberConnectionIndex < NUMBER_OF_REQUESTS; numberConnectionIndex++) {
+		simulation.getSimulationResults().setNumberOfRequests(numberOfRequests);
+		for (int numberConnectionIndex = 0; numberConnectionIndex < numberOfRequests; numberConnectionIndex++) {
 			simulation.clearElapsedConnections(); // Removes all the
 													// connections with
 													// elapsed time;
@@ -169,8 +182,7 @@ public class GeneticAlgorithmSimulationController extends AbstractSimulationCont
 			List<Route> routesFromSimulation = simulation.getIsRoutingAlgorithm().createRoutes(connection,
 					simulation.getTopology(), simulation.getCostFunction());
 			List<Route> routesFromIndividual = getRoutesFromIndividual(connection, individual);
-			List<Route> routesForSimulation = setRoutesForSimulation(routesFromSimulation, routesFromIndividual,
-					simulation.getSimulationParameters().getGeneticAlgorithmK());
+			List<Route> routesForSimulation = setRoutesForSimulation(routesFromSimulation, routesFromIndividual, k);
 			// If routing returned at least one route solution:
 			if (routesForSimulation != null && !routesForSimulation.isEmpty()) {
 				RSAWrapper simulationRouteWrapper = simulation.getRSAAlgorithm().getRSAWrapper(routesForSimulation,
