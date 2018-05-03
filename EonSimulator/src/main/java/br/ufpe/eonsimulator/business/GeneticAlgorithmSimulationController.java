@@ -27,7 +27,7 @@ public class GeneticAlgorithmSimulationController extends AbstractSimulationCont
 	private static Logger logger = Logger.getLogger(GeneticAlgorithmSimulationController.class);
 	private Map<PhysicalElementPair, List<Route>> routesMap;
 	private static final int NUMBER_OF_INDIVIDUALS = 50;
-	private static final double CROSSING_CONSTANT = 0.5; // a metade do
+	private static final double CROSSING_CONSTANT = 0.7; // a metade do
 															// individuo vai ser
 															// cruzada
 	private static final double ROULETTE_RATE = 0.6; // 60% dos melhores
@@ -36,13 +36,13 @@ public class GeneticAlgorithmSimulationController extends AbstractSimulationCont
 														// aleatorios
 	private static final long NUMBER_OF_REQUESTS = 100000;
 
-	private static final int NUMBER_OF_ITERATIONS = 10;
+	private static final int NUMBER_OF_ITERATIONS = 100;
 
 	// TODO: Colocar essas variaveis no simulation.properties
 	private static final double MIN_ARRIVAL = 80;
 	private static final double MAX_ARRIVAL = 120;
 	private static final List<Integer> SIMULATION_K_LIST = new ArrayList<Integer>();
-	private static final long SIMULATION_NUMBER_OF_REQUESTS = 100000;
+	private static final long SIMULATION_NUMBER_OF_REQUESTS = 10000000;
 
 	private List<Individual> individuals;
 
