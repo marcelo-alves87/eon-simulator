@@ -49,8 +49,7 @@ public class SimulationResults {
 	}
 
 	public void incrementNumberOfBitRateBlockedRequest(double bitRate) {
-		bitRateBlockingProbability.get(bitRate)
-				.incrementNumberOfBlockedRequest();
+		bitRateBlockingProbability.get(bitRate).incrementNumberOfBlockedRequest();
 	}
 
 	public void incrementNumberOfRequest(double bitRate) {
@@ -60,8 +59,7 @@ public class SimulationResults {
 
 	private void createBitRateIfNotExists(double bitRate) {
 		if (!bitRateBlockingProbability.containsKey(bitRate)) {
-			bitRateBlockingProbability.put(bitRate,
-					new SimulationRequestCount());
+			bitRateBlockingProbability.put(bitRate, new SimulationRequestCount());
 		}
 	}
 
@@ -106,5 +104,13 @@ public class SimulationResults {
 
 	public Map<Double, SimulationRequestCount> getBitRateBlockingProbability() {
 		return bitRateBlockingProbability;
+	}
+
+	public void incrementNumberOfBlockedRequests() {
+		this.numberOfBlockedRequests++;
+	}
+
+	public void setNumberOfRequests(long numberOfRequests) {
+		this.numberOfRequests = numberOfRequests;
 	}
 }

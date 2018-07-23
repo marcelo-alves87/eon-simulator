@@ -137,4 +137,8 @@ public class Path {
 		numberOfActiveConnections++;
 		
 	}
+
+	public String getIndex() {
+		return index;
+	}
 }
