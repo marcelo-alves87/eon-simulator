@@ -63,3 +63,4 @@ public class Individual implements Comparable<Individual> {
 	}
 
 }
+
